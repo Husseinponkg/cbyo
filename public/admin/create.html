@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Admin</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:Arial, sans-serif;
+            background:#f4f4f4;
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .container{
+            width:90%;
+            max-width:450px;
+        }
+
+        h1{
+            text-align:center;
+            color:rgb(3,175,255);
+            margin-bottom:20px;
+        }
+
+        form{
+            background:white;
+            padding:30px;
+            border-radius:10px;
+            box-shadow:0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        input{
+            width:100%;
+            padding:12px;
+            margin-bottom:15px;
+            border:1px solid #ccc;
+            border-radius:5px;
+            font-size:16px;
+        }
+
+        input:focus{
+            outline:none;
+            border-color:rgb(3,175,255);
+        }
+
+        button{
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:5px;
+            background:rgb(3,175,255);
+            color:white;
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:rgb(0,140,220);
+        }
+
+        @media(max-width:768px){
+            .container{
+                max-width:400px;
+            }
+        }
+
+        @media(max-width:480px){
+            form{
+                padding:20px;
+            }
+
+            h1{
+                font-size:24px;
+            }
+
+            input,
+            button{
+                font-size:14px;
+                padding:10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Create Admin</h1>
+
+        <form id="adminForm">
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter Username"
+                required
+            >
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter Password"
+                required
+            >
+
+            <button type="submit">Create Admin</button>
+        </form>
+    </div>
+
+    <script src="../js/admin.js"></script>
+
+</body>
+</html>

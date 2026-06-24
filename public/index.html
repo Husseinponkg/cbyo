@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capacity Youth Building Organization</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:white;
+}
+
+/* Header */
+h1{
+    background:rgb(3,175,255);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:15px;
+    padding:15px;
+    text-align:center;
+    flex-wrap:wrap;
+}
+
+.logo{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+/* Navigation */
+nav{
+    background:gold;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    padding:15px;
+}
+
+nav a{
+    text-decoration:none;
+    background:rgb(3,175,255);
+    color:white;
+    padding:10px 15px;
+    border-radius:5px;
+}
+
+/* Main Content */
+main{
+    padding:20px;
+}
+
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.gallery img{
+    width:100%;
+    height:250px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+/* Footer */
+footer{
+    background:rgb(3,175,255);
+    color:white;
+    text-align:center;
+    padding:15px;
+    margin-top:20px;
+}
+
+/* Tablet */
+@media (max-width:768px){
+    .gallery{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    h1{
+        font-size:24px;
+    }
+}
+
+/* Mobile */
+@media (max-width:480px){
+    .gallery{
+        grid-template-columns:1fr;
+    }
+
+    nav{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    nav a{
+        width:90%;
+        text-align:center;
+    }
+
+    h1{
+        font-size:20px;
+    }
+
+    .logo{
+        width:50px;
+        height:50px;
+    }
+}
+</style>
+</head>
+<body>
+
+<h1>
+    <img src="./images/cbyo.jpeg" alt="Logo" class="logo">
+    Welcome to Capacity Youth Building Organization
+</h1>
+
+<nav>
+    <a href="#">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="contacts.html">Contacts</a>
+    <a href="reg.html">Register</a>
+    <a href="login.html">Login</a>
+</nav>
+
+<main>
+    <div class="gallery">
+        <img src="./images/_MG_0231.JPG" alt="Image 1">
+        <img src="./images/IMG_5483.JPG.jpeg" alt="Image 2">
+        <img src="./images/IMG_6611.JPG (1).jpeg" alt="Image 3">
+        <img src="./images/IMG_6612.JPG.jpeg" alt="Image 4">
+        <img src="./images/IMG_5521.JPG.jpeg" alt="Image 5">
+        <img src="./images/IMG_6605.JPG.jpeg" alt="Image 6">
+    </div>
+</main>
+
+<footer>
+    © 2026 Capacity Youth Building Organization. All Rights Reserved.
+</footer>
+
+</body>
+</html>>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <nav><a href="view_report.html">viewz</a>
+    </nav>
+    <h1>create report</h1>
+    
+
+    <form id="createReport">
+        <input type="text" name="title" id="title"placeholder='title'><br><br>
+        <textarea id="description"placeholder='description'></textarea><br><br>
+        <input type="text" name="activity" id="activity" placeholder="activity"><br><br>
+        <button type="submit">submit</button><br>
+    </form><br><br>
+   <script>
+const form = document.getElementById('createReport');
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const data = {
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value,
+        activity: document.getElementById('activity').value
+    };
+
+    try {
+        const response = await fetch('/report/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const text = await response.text();
+        console.log(text);
+
+        if (response.ok) {
+            alert('Report created successfully');
+            form.reset();
+        } else {
+            alert('Server Error: ' + text);
+        }
+
+    } catch (error) {
+        console.error(error);
+        alert('Network Error: ' + error.message);
+    }
+});
+</script>
+    
+</body>
+</html>

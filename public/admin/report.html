@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Report</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:Arial, sans-serif;
+            background:#f4f4f4;
+            min-height:100vh;
+        }
+
+        nav{
+            background:gold;
+            padding:15px;
+            text-align:center;
+        }
+
+        nav a{
+            text-decoration:none;
+            background:rgb(3,175,255);
+            color:white;
+            padding:10px 15px;
+            border-radius:5px;
+        }
+
+        h1{
+            text-align:center;
+            color:rgb(3,175,255);
+            margin:30px 0;
+        }
+
+        form{
+            background:white;
+            max-width:600px;
+            margin:auto;
+            padding:30px;
+            border-radius:10px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        input,
+        textarea{
+            width:100%;
+            padding:12px;
+            border:1px solid #ccc;
+            border-radius:5px;
+            font-size:16px;
+            margin-bottom:15px;
+        }
+
+        textarea{
+            min-height:150px;
+            resize:vertical;
+        }
+
+        input:focus,
+        textarea:focus{
+            outline:none;
+            border-color:rgb(3,175,255);
+        }
+
+        button{
+            width:100%;
+            padding:12px;
+            background:rgb(3,175,255);
+            color:white;
+            border:none;
+            border-radius:5px;
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:rgb(0,140,220);
+        }
+
+        @media(max-width:768px){
+            form{
+                width:90%;
+            }
+        }
+
+        @media(max-width:480px){
+
+            body{
+                padding:10px;
+            }
+
+            form{
+                width:100%;
+                padding:20px;
+            }
+
+            h1{
+                font-size:24px;
+            }
+
+            input,
+            textarea,
+            button{
+                font-size:14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="view_report.html">View Reports</a>
+    </nav>
+
+    <h1>Create Report</h1>
+
+    <form id="createReport">
+
+        <input
+            type="text"
+            id="title"
+            placeholder="Report Title"
+            required
+        >
+
+        <textarea
+            id="description"
+            placeholder="Report Description"
+            required
+        ></textarea>
+
+        <input
+            type="text"
+            id="activity"
+            placeholder="Activity Name"
+            required
+        >
+
+        <button type="submit">
+            Submit Report
+        </button>
+
+    </form>
+
+<script>
+
+const form = document.getElementById('createReport');
+
+form.addEventListener('submit', async (e) => {
+
+    e.preventDefault();
+
+    const data = {
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value,
+        activity: document.getElementById('activity').value
+    };
+
+    try {
+
+        const response = await fetch('/report/create', {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(data)
+        });
+
+        const text = await response.text();
+
+        if(response.ok){
+
+            alert('Report created successfully');
+            form.reset();
+
+        }else{
+
+            alert('Server Error: ' + text);
+        }
+
+    }catch(error){
+
+        console.error(error);
+        alert('Network Error: ' + error.message);
+    }
+});
+
+</script>
+
+</body>
+</html>

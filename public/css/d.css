@@ -1,0 +1,140 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:#f4f4f4;
+    padding:20px;
+}
+
+h2,h3{
+    text-align:center;
+    color:rgb(3,175,255);
+    margin-bottom:20px;
+}
+
+table{
+    width:100%;
+    max-width:1000px;
+    margin:0 auto 30px;
+    border-collapse:collapse;
+    background:white;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+table th{
+    background:rgb(3,175,255);
+    color:white;
+    padding:15px;
+    text-align:left;
+}
+
+table td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+table tr:hover{
+    background:#f9f9f9;
+}
+
+button{
+    padding:8px 15px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    margin:2px;
+    color:white;
+}
+
+button:first-child{
+    background:#28a745;
+}
+
+button:first-child:hover{
+    background:#218838;
+}
+
+button:last-child{
+    background:#dc3545;
+}
+
+button:last-child:hover{
+    background:#c82333;
+}
+
+/* Update Form */
+input{
+    width:100%;
+    max-width:500px;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    margin-top:5px;
+}
+
+p{
+    max-width:500px;
+    margin:15px auto;
+}
+
+h3 + input[type="hidden"] + p,
+h3 + p{
+    text-align:left;
+}
+
+#adminId{
+    display:none;
+}
+
+/* Save Button */
+h3 ~ button{
+    display:block;
+    width:200px;
+    margin:20px auto;
+    background:rgb(3,175,255);
+    font-size:16px;
+}
+
+h3 ~ button:hover{
+    background:rgb(0,140,220);
+}
+
+/* Tablet */
+@media (max-width:768px){
+    table{
+        font-size:14px;
+    }
+
+    button{
+        padding:6px 10px;
+    }
+}
+
+/* Mobile */
+@media (max-width:480px){
+    body{
+        padding:10px;
+    }
+
+    table{
+        font-size:12px;
+    }
+
+    table th,
+    table td{
+        padding:8px;
+    }
+
+    button{
+        width:100%;
+        margin:5px 0;
+    }
+
+    input{
+        width:100%;
+    }
+}

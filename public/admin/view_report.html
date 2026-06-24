@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>view reports about cybo activities</h1>
+    <div id="cardform">
+
+    </div>
+<script>
+    const getallreports=async (req,res)=>{
+        try{
+          const response=await fetch('/report/all');
+          const data=await response.json();
+          const container=document.getElementById('cardform');
+
+          container.innerHtml='';
+          data.forEach(report=>{
+           const card=document.createElement('div');
+           card.className='card';
+           card.innerHTML=`
+           <h1>${report.title}</h1>
+            <p><strong>ID:${report.id}</strong></p>
+           <p><strong>${report.description}</strong></p>
+           <p><strong>${report.activity}</strong></p>
+           <p><strong>${new Date(report.create_at).toLocaleDateString()}</strong></p>
+           <button onclick='downloadreport(${report.id})'>download PDF</button>
+             <button onclick='deletereport(${report.id})'>delete PDF</button>
+           `;
+           container.appendChild(card);
+          });
+
+        }catch(error){
+        console.error('error in getting reports');
+
+        }
+    }
+     const downloadreport=(id)=>{
+            window.location.href=`/report/download/${id}`;
+        }
+
+    async function deletereport(id) {
+  if (!confirm("Delete report then refresh?")) return;
+
+  const res = await fetch(`/report/delete/${id}`, {
+    method: "DELETE"
+  });
+
+  if (res.ok) {
+    alert("Deleted");
+    getallreports();
+  }
+}
+ window.onload=getallreports;
+</script>     
+</body>
+</html>

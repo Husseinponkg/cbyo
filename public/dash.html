@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBO Dashboard</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:Arial, sans-serif;
+            background:#f4f4f4;
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+        }
+
+        /* Header */
+        h1{
+            background:rgb(3,175,255);
+            color:white;
+            text-align:center;
+            padding:20px;
+        }
+
+        h5{
+            text-align:center;
+            background:white;
+            padding:10px;
+            color:#555;
+        }
+
+        /* Navigation */
+        nav{
+            background:gold;
+            display:flex;
+            justify-content:center;
+            flex-wrap:wrap;
+            gap:10px;
+            padding:15px;
+        }
+
+        nav a{
+            text-decoration:none;
+            background:rgb(3,175,255);
+            color:white;
+            padding:10px 15px;
+            border-radius:5px;
+            transition:0.3s;
+        }
+
+        nav a:hover{
+            background:rgb(0,140,220);
+        }
+
+        /* Main Content */
+        .container{
+            flex:1;
+            display:flex;
+            gap:20px;
+            padding:20px;
+        }
+
+        /* Sidebar */
+        ul{
+            list-style:none;
+            width:250px;
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        ul li{
+            margin-bottom:15px;
+        }
+
+        ul li a{
+            display:block;
+            text-decoration:none;
+            background:rgb(3,175,255);
+            color:white;
+            padding:12px;
+            border-radius:5px;
+            text-align:center;
+        }
+
+        ul li a:hover{
+            background:rgb(0,140,220);
+        }
+
+        /* Content Area */
+        .content{
+            flex:1;
+            background:white;
+            padding:25px;
+            border-radius:10px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .content h2{
+            color:rgb(3,175,255);
+            margin-bottom:15px;
+        }
+
+        /* Footer */
+        footer{
+            background:rgb(3,175,255);
+            color:white;
+            text-align:center;
+            padding:15px;
+        }
+
+        /* Tablet */
+        @media(max-width:768px){
+            .container{
+                flex-direction:column;
+            }
+
+            ul{
+                width:100%;
+            }
+        }
+
+        /* Mobile */
+        @media(max-width:480px){
+
+            nav{
+                flex-direction:column;
+                align-items:center;
+            }
+
+            nav a{
+                width:90%;
+                text-align:center;
+            }
+
+            h1{
+                font-size:24px;
+            }
+
+            h5{
+                font-size:14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to Capacity Youth Building Organization</h1>
+    <h5>Karibu Sana Mwana CYBO</h5>
+
+    <nav>
+        <a href="#">Home</a>
+        
+        <a href="view_report.html">View Reports</a>
+        <a href="media.html">Gallery</a>
+        <a href="index.html">Logout</a>
+    </nav>
+
+    <div class="container">
+
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="media.html">Gallery</a></li>
+            <li><a href="view_report.html">View Reports</a></li>
+            <li><a href="index.html">Logout</a></li>
+        </ul>
+
+        <div class="content">
+            <h2>Member Dashboard</h2>
+
+            <p>
+                Welcome to the Capacity Youth Building Organization (CYBO)
+                member dashboard. Through this platform you can access
+                organization information, view reports, browse the media
+                gallery, and stay updated with activities and programs.
+            </p>
+
+            <br>
+
+            <p>
+                CYBO is dedicated to empowering youth through education,
+                leadership development, entrepreneurship, community service,
+                and technology innovation.
+            </p>
+        </div>
+
+    </div>
+
+    <footer>
+        © 2026 CYBO Foundation. All Rights Reserved.
+    </footer>
+
+</body>
+</html>

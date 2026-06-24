@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Management</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:Arial, sans-serif;
+            background:#f4f4f4;
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+        }
+
+        /* Header */
+        header{
+            background:rgb(3,175,255);
+            color:white;
+            text-align:center;
+            padding:20px;
+        }
+
+        /* Navigation */
+        nav{
+            background:gold;
+            display:flex;
+            justify-content:center;
+            flex-wrap:wrap;
+            gap:10px;
+            padding:15px;
+        }
+
+        nav a{
+            text-decoration:none;
+            background:rgb(3,175,255);
+            color:white;
+            padding:10px 15px;
+            border-radius:5px;
+            transition:0.3s;
+        }
+
+        nav a:hover{
+            background:rgb(0,140,220);
+        }
+
+        /* Main Layout */
+        .container{
+            display:flex;
+            flex:1;
+            padding:20px;
+            gap:20px;
+        }
+
+        /* Sidebar */
+        aside{
+            width:250px;
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        aside h3{
+            text-align:center;
+            color:rgb(3,175,255);
+            margin-bottom:15px;
+        }
+
+        aside ul{
+            list-style:none;
+        }
+
+        aside ul li{
+            margin-bottom:10px;
+        }
+
+        aside ul li a{
+            display:block;
+            text-decoration:none;
+            background:rgb(3,175,255);
+            color:white;
+            padding:12px;
+            text-align:center;
+            border-radius:5px;
+            transition:0.3s;
+        }
+
+        aside ul li a:hover{
+            background:rgb(0,140,220);
+        }
+
+        /* Content */
+        main{
+            flex:1;
+            background:white;
+            padding:25px;
+            border-radius:10px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        main h2{
+            color:rgb(3,175,255);
+            margin-bottom:15px;
+        }
+
+        .cards{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:20px;
+            margin-top:20px;
+        }
+
+        .card{
+            background:rgb(3,175,255);
+            color:white;
+            padding:20px;
+            text-align:center;
+            border-radius:10px;
+        }
+
+        .card h3{
+            margin-bottom:10px;
+        }
+
+        /* Footer */
+        footer{
+            background:rgb(3,175,255);
+            color:white;
+            text-align:center;
+            padding:15px;
+        }
+
+        /* Tablet */
+        @media(max-width:768px){
+
+            .container{
+                flex-direction:column;
+            }
+
+            aside{
+                width:100%;
+            }
+
+            .cards{
+                grid-template-columns:repeat(2,1fr);
+            }
+        }
+
+        /* Mobile */
+        @media(max-width:480px){
+
+            nav{
+                flex-direction:column;
+                align-items:center;
+            }
+
+            nav a{
+                width:90%;
+                text-align:center;
+            }
+
+            .cards{
+                grid-template-columns:1fr;
+            }
+
+            header h1{
+                font-size:24px;
+            }
+
+            main{
+                padding:15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Admin Management Page</h1>
+    </header>
+
+    <nav>
+        <a href="#">Home</a>
+        <a href="report.html">Report</a>
+        <a href="view.html">View All Users</a>
+        <a href="manage.html">Manage Users</a>
+        
+        <a href="media.html">Media</a>
+    </nav>
+
+    <div class="container">
+
+        <aside>
+            <h3>Quick Actions</h3>
+
+            <ul>
+                <li><a href="create.html">Create User</a></li>
+                <li><a href="view_report.html">View Reports</a></li>
+                <li><a href="viewadmins.html">View Admins</a></li>
+                <li><a href="index.html">Logout</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <h2>Welcome Administrator</h2>
+
+            <p>
+                Use this dashboard to manage users, administrators,
+                reports, and media resources within the Capacity Youth
+                Building Organization system.
+            </p>
+
+            <div class="cards">
+
+                <div class="card">
+                    <h3>Users</h3>
+                    <p>Manage registered users.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Reports</h3>
+                    <p>View and manage reports.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Media</h3>
+                    <p>Upload and manage media files.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Admins</h3>
+                    <p>Create and manage administrators.</p>
+                </div>
+
+                <div class="card">
+                    <h3>System</h3>
+                    <p>Monitor system activities.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Settings</h3>
+                    <p>Configure platform settings.</p>
+                </div>
+
+            </div>
+        </main>
+
+    </div>
+
+    <footer>
+        © 2026 CYBO. All Rights Reserved.
+    </footer>
+
+</body>
+</html>

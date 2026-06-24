@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>users management page</title>
+    <link rel="stylesheet" href="../css/d.css">
+</head>
+<body>
+    <h1>users List</h1>
+    <h3>Total members: <span id="userCount">0</span></h3>
+
+<table border="1" cellpadding="10">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Username</th>
+      <th>email</th>
+      <th>phone</th>
+      <th>location</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody id="tableBody"></tbody>
+</table>
+
+<!-- Simple Update Form -->
+<h3>Update user</h3>
+
+<input type="hidden" id="userId">
+
+<p>
+  Username:<br>
+  <input type="text" id="username">
+</p>
+
+<p>
+  Password:<br>
+  <input type="password" id="password" placeholder="New password (optional)">
+</p>
+
+<button onclick="saveUpdate()">Save</button>
+
+<script>
+const getCount=async()=>{
+  const response=await fetch('/auth/count');
+  const data=await response.json();
+  document.getElementById('userCount').textContent=data.total;
+}
+window.onload=getCount;
+
+const tableBody = document.getElementById("tableBody");
+
+// LOAD ADMINS
+async function loadUsers() {
+  const res = await fetch("/auth/all");
+  const users = await res.json();
+
+  tableBody.innerHTML = "";
+
+  users.forEach((user, i) => {
+    tableBody.innerHTML += `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${user.username}</td>
+          <td>${user.email}</td>
+            <td>${user.phone}</td>
+              <td>${user.location}</td>
+        <td>
+          <button onclick="editUser('${user.id}', '${user.username}')">
+            Update
+          </button>
+
+          <button onclick="deleteUser('${user.id}')">
+            Delete
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+// CLICK UPDATE → SHOW DATA IN FORM
+function editUser(id, username) {
+  document.getElementById("userId").value = id;
+  document.getElementById("username").value = username;
+  document.getElementById("password").value = "";
+}
+
+// SAVE UPDATE
+async function saveUpdate() {
+  const id = document.getElementById("userId").value;
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  const data = { username };
+
+  if (password !== "") {
+    data.password = password;
+  }
+
+  const res = await fetch(`/auth/update/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (res.ok) {
+    alert("Updated successfully");
+    loadAdmins();
+  } else {
+    alert("Update failed");
+  }
+}
+
+// DELETE
+async function deleteUser(id) {
+  if (!confirm("Delete user?")) return;
+
+  const res = await fetch(`/auth/delete/${id}`, {
+    method: "DELETE"
+  });
+
+  if (res.ok) {
+    alert("Deleted");
+    loadUsers();
+  }
+}
+
+loadUsers();
+
+</script>
+
+    
+</body>
+</html>

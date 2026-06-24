@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Management (Simple)</title>
+  <link rel="stylesheet" href="../css/d.css">
+</head>
+<body>
+
+<h2>Admin List</h2>
+
+<table border="1" cellpadding="10">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Username</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody id="tableBody"></tbody>
+</table>
+
+<!-- Simple Update Form -->
+<h3>Update Admin</h3>
+
+<input type="hidden" id="adminId">
+
+<p>
+  Username:<br>
+  <input type="text" id="username">
+</p>
+
+<p>
+  Password:<br>
+  <input type="password" id="password" placeholder="New password (optional)">
+</p>
+
+<button onclick="saveUpdate()">Save</button>
+
+<script>
+
+const tableBody = document.getElementById("tableBody");
+
+// LOAD ADMINS
+async function loadAdmins() {
+  const res = await fetch("/admin/getadmins");
+  const admins = await res.json();
+
+  tableBody.innerHTML = "";
+
+  admins.forEach((admin, i) => {
+    tableBody.innerHTML += `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${admin.username}</td>
+        <td>
+          <button onclick="editAdmin('${admin.id}', '${admin.username}')">
+            Update
+          </button>
+
+          <button onclick="deleteAdmin('${admin.id}')">
+            Delete
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+// CLICK UPDATE → SHOW DATA IN FORM
+function editAdmin(id, username) {
+  document.getElementById("adminId").value = id;
+  document.getElementById("username").value = username;
+  document.getElementById("password").value = "";
+}
+
+// SAVE UPDATE
+async function saveUpdate() {
+  const id = document.getElementById("adminId").value;
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  const data = { username };
+
+  if (password !== "") {
+    data.password = password;
+  }
+
+  const res = await fetch(`/admin/update/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (res.ok) {
+    alert("Updated successfully");
+    loadAdmins();
+  } else {
+    alert("Update failed");
+  }
+}
+
+// DELETE
+async function deleteAdmin(id) {
+  if (!confirm("Delete admin?")) return;
+
+  const res = await fetch(`/admin/delete/${id}`, {
+    method: "DELETE"
+  });
+
+  if (res.ok) {
+    alert("Deleted");
+    loadAdmins();
+  }
+}
+
+loadAdmins();
+
+</script>
+
+</body>
+</html>

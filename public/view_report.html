@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Reports</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:Arial, sans-serif;
+            background:#f4f4f4;
+            padding:20px;
+        }
+
+        h1{
+            text-align:center;
+            color:rgb(3,175,255);
+            margin-bottom:30px;
+        }
+
+        #cardform{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:20px;
+        }
+
+        .card{
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .card h2{
+            color:rgb(3,175,255);
+            margin-bottom:10px;
+        }
+
+        .card p{
+            margin:8px 0;
+            color:#444;
+        }
+
+        button{
+            padding:10px 15px;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+            color:white;
+            margin-top:10px;
+            margin-right:5px;
+        }
+
+        .download-btn{
+            background:#28a745;
+        }
+
+        .delete-btn{
+            background:#dc3545;
+        }
+
+        .download-btn:hover{
+            background:#218838;
+        }
+
+        .delete-btn:hover{
+            background:#c82333;
+        }
+
+        @media(max-width:768px){
+            #cardform{
+                grid-template-columns:repeat(2,1fr);
+            }
+        }
+
+        @media(max-width:480px){
+            #cardform{
+                grid-template-columns:1fr;
+            }
+
+            button{
+                width:100%;
+                margin-bottom:10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>View Reports About CYBO Activities</h1>
+
+    <div id="cardform"></div>
+
+<script>
+
+async function getallreports(){
+
+    try{
+
+        const response = await fetch('/report/all');
+        const data = await response.json();
+
+        const container = document.getElementById('cardform');
+
+        container.innerHTML = '';
+
+        data.forEach(report => {
+
+            const card = document.createElement('div');
+            card.className = 'card';
+
+            card.innerHTML = `
+                <h2>${report.title}</h2>
+
+                <p><strong>ID:</strong> ${report.id}</p>
+
+                <p><strong>Description:</strong> ${report.description}</p>
+
+                <p><strong>Activity:</strong> ${report.activity}</p>
+
+                <p>
+                    <strong>Date:</strong>
+                    ${new Date(report.created_at).toLocaleDateString()}
+                </p>
+
+                <button class="download-btn"
+                    onclick="downloadreport(${report.id})">
+                    Download PDF
+                </button>
+
+                <button class="delete-btn"
+                    onclick="deletereport(${report.id})">
+                    Delete
+                </button>
+            `;
+
+            container.appendChild(card);
+        });
+
+    }catch(error){
+
+        console.error('Error loading reports:', error);
+    }
+}
+
+function downloadreport(id){
+    window.location.href = `/report/download/${id}`;
+}
+
+async function deletereport(id){
+
+    if(!confirm("Delete this report?")) return;
+
+    const res = await fetch(`/report/delete/${id}`,{
+        method:'DELETE'
+    });
+
+    if(res.ok){
+        alert('Deleted Successfully');
+        getallreports();
+    }else{
+        alert('Delete Failed');
+    }
+}
+
+window.onload = getallreports;
+
+</script>
+
+</body>
+</html>
