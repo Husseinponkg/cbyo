@@ -1,154 +1,813 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Capacity Youth Building Organization</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capacity Building for Youth Organization | Dodoma, Tanzania</title>
+    <style>
+        /* --- CSS Variables & Theme System --- */
+        :root {
+            --primary-dark-blue: #0a1f44;  /* Dark Blue */
+            --primary-gold: #ffd700;        /* Golden Yellow */
+            --primary-green: #2e7d32;       /* Green */
+            --bg-body: #ffffff;
+            --bg-card: #f9f9f9;
+            --text-main: #1a1a1a;
+            --text-light: #555555;
+            --text-on-dark: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
+        }
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+        [data-theme="dark"] {
+            --primary-dark-blue: #0d2b5e;
+            --primary-gold: #ffd700;
+            --primary-green: #388e3c;
+            --bg-body: #0f1115;
+            --bg-card: #1a1d24;
+            --text-main: #f0f0f0;
+            --text-light: #b0b0b0;
+            --text-on-dark: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
 
-body{
-    font-family:Arial, sans-serif;
-    background:white;
-}
+        /* --- Global Reset --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
 
-/* Header */
-h1{
-    background:rgb(3,175,255);
-    color:white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:15px;
-    padding:15px;
-    text-align:center;
-    flex-wrap:wrap;
-}
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            transition: var(--transition);
+            line-height: 1.6;
+        }
 
-.logo{
-    width:70px;
-    height:70px;
-    border-radius:50%;
-    object-fit:cover;
-}
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-/* Navigation */
-nav{
-    background:gold;
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:10px;
-    padding:15px;
-}
+        /* --- Theme Toggle Button --- */
+        .theme-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: var(--primary-gold);
+            color: var(--primary-dark-blue);
+            border: 2px solid var(--primary-dark-blue);
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+        }
 
-nav a{
-    text-decoration:none;
-    background:rgb(3,175,255);
-    color:white;
-    padding:10px 15px;
-    border-radius:5px;
-}
+        /* --- Header --- */
+        header {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            padding: 15px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--primary-dark-blue);
+            transition: var(--transition);
+        }
 
-/* Main Content */
-main{
-    padding:20px;
-}
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-dark-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-.gallery{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:20px;
-}
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-gold);
+            background: white;
+            flex-shrink: 0;
+        }
 
-.gallery img{
-    width:100%;
-    height:250px;
-    object-fit:cover;
-    border-radius:10px;
-}
+        /* --- Navigation (Desktop) --- */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
 
-/* Footer */
-footer{
-    background:rgb(3,175,255);
-    color:white;
-    text-align:center;
-    padding:15px;
-    margin-top:20px;
-}
+        nav a {
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            color: var(--text-main);
+        }
 
-/* Tablet */
-@media (max-width:768px){
-    .gallery{
-        grid-template-columns:repeat(2,1fr);
-    }
+        nav a:hover, nav a.active {
+            color: var(--primary-green);
+        }
 
-    h1{
-        font-size:24px;
-    }
-}
+        /* --- Mobile Menu Button (3 Dots) --- */
+        .menu-btn {
+            display: none; 
+            background: transparent;
+            border: none;
+            color: var(--primary-dark-blue);
+            font-size: 32px;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: var(--transition);
+            line-height: 1;
+        }
 
-/* Mobile */
-@media (max-width:480px){
-    .gallery{
-        grid-template-columns:1fr;
-    }
+        [data-theme="dark"] .menu-btn {
+            color: var(--primary-gold);
+        }
 
-    nav{
-        flex-direction:column;
-        align-items:center;
-    }
+        /* --- Hero Section (Overland Style) --- */
+        .hero {
+            position: relative;
+            height: 80vh;
+            min-height: 500px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
 
-    nav a{
-        width:90%;
-        text-align:center;
-    }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    h1{
-        font-size:20px;
-    }
+        .slide.active {
+            opacity: 1;
+        }
 
-    .logo{
-        width:50px;
-        height:50px;
-    }
-}
-</style>
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 31, 68, 0.7); /* Dark Blue overlay */
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .slide-content .subtitle {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--primary-gold);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .slide-content h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+            line-height: 1.2;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
+        }
+
+        .slide-content p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            font-weight: 400;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: var(--primary-green);
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            transition: var(--transition);
+            border: 2px solid var(--primary-green);
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            color: var(--primary-gold);
+            border-color: var(--primary-gold);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Main Content & Sections --- */
+        main {
+            padding: 80px 5%;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-dark-blue);
+            line-height: 1.2;
+        }
+        
+        [data-theme="dark"] .section-title {
+            color: var(--primary-gold);
+        }
+
+        .section-title .highlight {
+            color: var(--primary-green);
+        }
+
+        /* --- Feature Cards (Overland Style) --- */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .feature-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .feature-card-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-card-content .tag {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary-green);
+            margin-bottom: 10px;
+        }
+
+        .feature-card-content h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-dark-blue);
+            margin-bottom: 15px;
+        }
+
+        [data-theme="dark"] .feature-card-content h3 {
+            color: var(--primary-gold);
+        }
+
+        .feature-card-content p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+
+        .feature-card-content .card-btn {
+            margin-top: 20px;
+            display: inline-block;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            color: var(--primary-dark-blue);
+            border-bottom: 2px solid var(--primary-gold);
+            align-self: flex-start;
+            padding-bottom: 2px;
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .feature-card-content .card-btn {
+            color: var(--primary-gold);
+        }
+
+        .feature-card-content .card-btn:hover {
+            color: var(--primary-green);
+            border-color: var(--primary-green);
+        }
+
+        /* --- Overland Style "Values" Section --- */
+        .values-section {
+            background-color: var(--primary-dark-blue);
+            color: var(--text-on-dark);
+            padding: 80px 5%;
+            border-radius: 12px;
+            margin-bottom: 80px;
+            text-align: center;
+        }
+
+        .values-section h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary-gold);
+            margin-bottom: 20px;
+        }
+
+        .values-section > p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto 50px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .value-item h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-gold);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .value-item p {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* --- Gallery Section --- */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 4px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--primary-dark-blue);
+            color: var(--text-on-dark);
+            padding: 60px 5% 20px;
+            border-top: 8px solid var(--primary-gold);
+        }
+
+        .footer-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            color: var(--primary-gold);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--primary-green);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .footer-col p, .footer-col a {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.95rem;
+            line-height: 2;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .footer-col a:hover {
+            color: var(--primary-gold);
+            padding-left: 8px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 992px) {
+            .slide-content h2 { font-size: 2.5rem; }
+            .slide-content p { font-size: 1.1rem; }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 15px 20px;
+            }
+
+            .header-brand {
+                font-size: 0.9rem;
+                text-align: left;
+                flex: 1;
+            }
+
+            .logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            /* Hide standard nav links */
+            nav ul {
+                display: none; 
+                flex-direction: column;
+                width: 100%;
+                background-color: var(--bg-body);
+                position: absolute;
+                top: 100%;
+                left: 0;
+                padding: 20px;
+                border-bottom: 4px solid var(--primary-gold);
+                box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+                gap: 15px;
+            }
+
+            /* Show nav when active */
+            nav ul.active {
+                display: flex;
+            }
+
+            nav a {
+                display: block;
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            /* Show 3 dots */
+            .menu-btn {
+                display: block;
+            }
+
+            .hero { height: 70vh; }
+            .slide-content h2 { font-size: 2rem; }
+            .slide-content p { font-size: 1rem; }
+            .section-title { font-size: 2rem; }
+            
+            .values-section {
+                padding: 50px 20px;
+            }
+            
+            .feature-grid, .thematic-grid { gap: 20px; }
+        }
+
+        @media (max-width: 480px) {
+            .header-brand span { font-size: 0.8rem; }
+            .logo { width: 35px; height: 35px; }
+            
+            .hero { height: 60vh; }
+            .slide-content h2 { font-size: 1.6rem; }
+            .slide-content p { font-size: 0.9rem; }
+            .btn { padding: 12px 25px; font-size: 0.9rem; }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .footer-col a:hover { padding-left: 0; }
+            
+            .theme-toggle {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<h1>
-    <img src="./images/cbyo.jpeg" alt="Logo" class="logo">
-    Welcome to Capacity Youth Building Organization
-</h1>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark/Light Mode">🌙</button>
 
-<nav>
-    <a href="#">Home</a>
-    <a href="about.html">About Us</a>
-    <a href="contacts.html">Contacts</a>
-    <a href="reg.html">Register</a>
-    <a href="login.html">Login</a>
-</nav>
+    <!-- Header -->
+    <header>
+        <div class="header-brand">
+            <img src="./images/cbyo.jpeg" alt="CBYO Logo" class="logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48Y2lyY2xlIGN4PSIyNSIgY3k9IjI1IiByPSIyNCIgZmlsbD0iIzBhMWY0NCIgc3Ryb2tlPSIjZmZkNzAwIiBzdHJva2Utd2lkdGg9IjMiLz48dGV4dCB4PSIyNSIgeT0iMzAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtd2VpZ2h0PSJib2xkIj5DQllPPC90ZXh0Pjwvc3ZnPg=='">
+            <span>Capacity Building for Youth Organization</span>
+        </div>
+        
+        <!-- 3 Dots Mobile Menu Button -->
+        <button class="menu-btn" id="menuBtn" aria-label="Toggle Navigation Menu">⋮</button>
 
-<main>
-    <div class="gallery">
-        <img src="./images/_MG_0231.JPG" alt="Image 1">
-        <img src="./images/IMG_5483.JPG.jpeg" alt="Image 2">
-        <img src="./images/IMG_6611.JPG (1).jpeg" alt="Image 3">
-        <img src="./images/IMG_6612.JPG.jpeg" alt="Image 4">
-        <img src="./images/IMG_5521.JPG.jpeg" alt="Image 5">
-        <img src="./images/IMG_6605.JPG.jpeg" alt="Image 6">
-    </div>
-</main>
+        <nav>
+            <ul id="navLinks">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contacts.html">Contacts</a></li>
+                <li><a href="reg.html">Register</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<footer>
-    © 2026 Capacity Youth Building Organization. All Rights Reserved.
-</footer>
+    <!-- Hero Slideshow (Overland Style) -->
+    <section class="hero">
+        <!-- Slide 1 -->
+        <div class="slide active" style="background-image: url('./images/_MG_0231.JPG');">
+            <div class="slide-content">
+                <span class="subtitle">Carefully crafted programs since 2020</span>
+                <h2>THE PREMIER YOUTH EMPOWERMENT ORGANIZATION</h2>
+                <p>Join us in Dodoma, Tanzania, as we equip young leaders with the skills, knowledge, and opportunities to drive positive change.</p>
+                <a href="about.html" class="btn">Learn More</a>
+            </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="slide" style="background-image: url('./images/IMG_5483.JPG.jpeg');">
+            <div class="slide-content">
+                <span class="subtitle">Education & Capacity Building</span>
+                <h2>Unlock Your Full Potential</h2>
+                <p>We provide foundational education and practical training to unlock the potential of every young person.</p>
+                <a href="reg.html" class="btn">Join a Program</a>
+            </div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="slide" style="background-image: url('./images/IMG_6611.JPG (1).jpeg');">
+            <div class="slide-content">
+                <span class="subtitle">Entrepreneurship & Innovation</span>
+                <h2>Build Sustainable Livelihoods</h2>
+                <p>Fostering a culture of innovation, digital literacy, and business skills to create sustainable livelihoods.</p>
+                <a href="contacts.html" class="btn">Partner With Us</a>
+            </div>
+        </div>
+        <!-- Slide 4 -->
+        <div class="slide" style="background-image: url('./images/IMG_6612.JPG.jpeg');">
+            <div class="slide-content">
+                <span class="subtitle">Child & Nutrition Support</span>
+                <h2>Nurturing the Next Generation</h2>
+                <p>Ensuring the health and well-being of the next generation through community-driven nutrition programs.</p>
+                <a href="contacts.html" class="btn">Get Involved</a>
+            </div>
+        </div>
+    </section>
 
+    <!-- Main Content -->
+    <main>
+        <!-- Thematic Areas Section (Overland "Choose Your Adventure" Style) -->
+        <h2 class="section-title">Our <span class="highlight">Thematic Areas</span></h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <img src="./images/_MG_0231.JPG" alt="Education & Capacity Building" onerror="this.src='https://placehold.co/400x250/0a1f44/ffd700?text=Education+%26+Capacity'">
+                <div class="feature-card-content">
+                    <span class="tag">Education & Capacity Building</span>
+                    <h3>Foundational Literacy & Training</h3>
+                    <p>Providing foundational literacy, vocational training, and leadership skills to prepare youth for the workforce and civic life.</p>
+                    <a href="reg.html" class="card-btn">Join Program →</a>
+                </div>
+            </div>
+            <div class="feature-card">
+                <img src="./images/IMG_6611.JPG (1).jpeg" alt="Entrepreneurship" onerror="this.src='https://placehold.co/400x250/ffd700/0a1f44?text=Entrepreneurship'">
+                <div class="feature-card-content">
+                    <span class="tag">Entrepreneurship</span>
+                    <h3>Business Acumen & Mentorship</h3>
+                    <p>Equipping young people with business acumen, financial literacy, and mentorship to start and sustain their own ventures.</p>
+                    <a href="reg.html" class="card-btn">Join Program →</a>
+                </div>
+            </div>
+            <div class="feature-card">
+                <img src="./images/IMG_6612.JPG.jpeg" alt="Digital Innovations" onerror="this.src='https://placehold.co/400x250/0a1f44/ffd700?text=Digital+Innovations'">
+                <div class="feature-card-content">
+                    <span class="tag">Digital Innovations</span>
+                    <h3>Bridging the Digital Divide</h3>
+                    <p>Bridging the digital divide through ICT training, coding bootcamps, and promoting tech-driven solutions for local challenges.</p>
+                    <a href="reg.html" class="card-btn">Join Program →</a>
+                </div>
+            </div>
+            <div class="feature-card">
+                <img src="./images/IMG_5521.JPG.jpeg" alt="Child & Nutrition" onerror="this.src='https://placehold.co/400x250/2e7d32/ffffff?text=Child+%26+Nutrition'">
+                <div class="feature-card-content">
+                    <span class="tag">Child & Nutrition</span>
+                    <h3>Community Health & Well-being</h3>
+                    <p>Implementing community health programs, nutritional education, and support systems to ensure the well-being of children and mothers.</p>
+                    <a href="contacts.html" class="card-btn">Get Involved →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overland Style "Values" Section (Four Levels, One Goal) -->
+        <div class="values-section">
+            <h2>Four Pillars, One Goal</h2>
+            <p>There’s a reason communities trust CBYO year after year: at every level, our programs offer thoughtful planning, appropriate challenges, and supportive groups.</p>
+            <div class="values-grid">
+                <div class="value-item">
+                    <h4>Carefully Crafted Programs</h4>
+                    <p>Every CBYO program offers thoughtfully planned activities full of growth and learning.</p>
+                </div>
+                <div class="value-item">
+                    <h4>Exceptional Leaders</h4>
+                    <p>Capable and caring, CBYO’s leaders are role models of the highest order.</p>
+                </div>
+                <div class="value-item">
+                    <h4>Focused on Safety</h4>
+                    <p>CBYO is committed to creating safe, supportive, and inclusive environments for all youth.</p>
+                </div>
+                <div class="value-item">
+                    <h4>Community Driven</h4>
+                    <p>CBYO offers supportive, wholesome experiences that empower local communities.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Section (Overland Style "Student Stories") -->
+        <h2 class="section-title">Our <span class="highlight">Impact in Pictures</span></h2>
+        <div class="gallery">
+            <img src="./images/_MG_0231.JPG" alt="Youth Workshop" onerror="this.src='https://placehold.co/400x250/0a1f44/ffd700?text=Education+%26+Capacity'">
+            <img src="./images/IMG_5483.JPG.jpeg" alt="Community Event" onerror="this.src='https://placehold.co/400x250/2e7d32/ffffff?text=Community+Engagement'">
+            <img src="./images/IMG_6611.JPG (1).jpeg" alt="Training Session" onerror="this.src='https://placehold.co/400x250/ffd700/0a1f44?text=Entrepreneurship'">
+            <img src="./images/IMG_6612.JPG.jpeg" alt="Team Building" onerror="this.src='https://placehold.co/400x250/0a1f44/ffd700?text=Digital+Innovations'">
+            <img src="./images/IMG_5521.JPG.jpeg" alt="Outreach Program" onerror="this.src='https://placehold.co/400x250/2e7d32/ffffff?text=Child+%26+Nutrition'">
+            <img src="./images/IMG_6605.JPG.jpeg" alt="Graduation Ceremony" onerror="this.src='https://placehold.co/400x250/ffd700/0a1f44?text=Youth+Leadership'">
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>CBYO</h3>
+                <p>Capacity Building for Youth Organization is a registered non-profit dedicated to youth empowerment, education, and community development.</p>
+                <p><strong>Headquarters:</strong> Dodoma, Tanzania</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <a href="#">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="contacts.html">Contacts</a>
+                <a href="reg.html">Register</a>
+                <a href="login.html">Login</a>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <p>✉️ info@cbyo.org</p>
+                <p>📞 +255 744 220 587</p>
+                <p>📍 Dodoma, Tanzania</p>
+            </div>
+            <div class="footer-col">
+                <h3>Follow Us</h3>
+                <a href="https://www.linkedin.com/in/capacity-building-for-youth1-03113a3aa?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://whatsapp.com/channel/0029VbBurVVA2pLFQChVKD3Z" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                <a href="https://www.facebook.com/profile.php?id=61587506245373" target="_blank" rel="noopener noreferrer">Facebook</a>
+                <a href="https://youtube.com/@capacitybuildingforyouthorgani?si=eRw08VCYtm6dbVAt" target="_blank" rel="noopener noreferrer">YouTube</a>
+                <a href="https://www.instagram.com/capacitybuildingfor_youth1?stkn=Zm9pOG16dDV6N3hi&utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Capacity Building for Youth Organization. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- JavaScript for Theme, Slideshow, and Mobile Menu -->
+    <script>
+        // --- Theme Toggle Logic ---
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateToggleIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateToggleIcon(newTheme);
+        });
+
+        function updateToggleIcon(theme) {
+            themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+
+        // --- Mobile Menu (3 Dots) Logic ---
+        const menuBtn = document.getElementById('menuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            navLinks.classList.toggle('active');
+            menuBtn.textContent = navLinks.classList.contains('active') ? '✕' : '⋮';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
+                navLinks.classList.remove('active');
+                menuBtn.textContent = '⋮';
+            }
+        });
+
+        // --- Slideshow Logic ---
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlides() {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slideIndex++;
+            if (slideIndex >= slides.length) { slideIndex = 0; }
+            slides[slideIndex].classList.add('active');
+            setTimeout(showSlides, 5000); 
+        }
+
+        if (slides.length > 0) {
+            setTimeout(showSlides, 5000);
+        }
+    </script>
 </body>
-</html>>
+</html>

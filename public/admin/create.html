@@ -3,118 +3,339 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Admin</title>
-
+    <title>Create Admin - Capacity Building for Youth Organization</title>
     <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
+        /* --- CSS Variables & Theme System --- */
+        :root {
+            --primary-dark-blue: #0a1f44;
+            --primary-gold: #ffd700;
+            --primary-green: #2e7d32;
+            --bg-body: #ffffff;
+            --bg-card: #f9f9f9;
+            --text-main: #1a1a1a;
+            --text-light: #555555;
+            --text-on-dark: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
         }
 
-        body{
-            font-family:Arial, sans-serif;
-            background:#f4f4f4;
-            min-height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
+        [data-theme="dark"] {
+            --primary-dark-blue: #0d2b5e;
+            --primary-gold: #ffd700;
+            --primary-green: #388e3c;
+            --bg-body: #0f1115;
+            --bg-card: #1a1d24;
+            --text-main: #f0f0f0;
+            --text-light: #b0b0b0;
+            --text-on-dark: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
-        .container{
-            width:90%;
-            max-width:450px;
+        /* --- Global Reset --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        h1{
-            text-align:center;
-            color:rgb(3,175,255);
-            margin-bottom:20px;
+        html {
+            scroll-behavior: smooth;
         }
 
-        form{
-            background:white;
-            padding:30px;
-            border-radius:10px;
-            box-shadow:0 4px 10px rgba(0,0,0,0.15);
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            transition: var(--transition);
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 30px 20px;
         }
 
-        input{
-            width:100%;
-            padding:12px;
-            margin-bottom:15px;
-            border:1px solid #ccc;
-            border-radius:5px;
-            font-size:16px;
+        /* --- Theme Toggle Button --- */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-gold);
+            color: var(--primary-dark-blue);
+            border: 2px solid var(--primary-dark-blue);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
         }
 
-        input:focus{
-            outline:none;
-            border-color:rgb(3,175,255);
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
         }
 
-        button{
-            width:100%;
-            padding:12px;
-            border:none;
-            border-radius:5px;
-            background:rgb(3,175,255);
-            color:white;
-            font-size:16px;
-            cursor:pointer;
+        /* --- Form Container --- */
+        .container {
+            width: 100%;
+            max-width: 480px;
         }
 
-        button:hover{
-            background:rgb(0,140,220);
+        .form-card {
+            background: var(--bg-card);
+            padding: 45px 35px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border-top: 8px solid var(--primary-gold);
+            border-left: 1px solid rgba(0,0,0,0.05);
+            border-right: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            text-align: center;
+            transition: var(--transition);
         }
 
-        @media(max-width:768px){
-            .container{
-                max-width:400px;
+        [data-theme="dark"] .form-card {
+            border-left-color: rgba(255,255,255,0.05);
+            border-right-color: rgba(255,255,255,0.05);
+            border-bottom-color: rgba(255,255,255,0.05);
+        }
+
+        /* Logo inside the form */
+        .form-logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-gold);
+            background: white;
+            margin: 0 auto 20px;
+            display: block;
+        }
+
+        .form-card h1 {
+            color: var(--primary-dark-blue);
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 5px;
+        }
+
+        [data-theme="dark"] .form-card h1 {
+            color: var(--primary-gold);
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- Form Styling --- */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--bg-body);
+            color: var(--text-main);
+            transition: var(--transition);
+            outline: none;
+            font-family: inherit;
+        }
+
+        [data-theme="dark"] input[type="text"],
+        [data-theme="dark"] input[type="password"] {
+            border-color: #333;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+
+        input::placeholder {
+            color: #aaa;
+            font-size: 0.95rem;
+            text-transform: capitalize;
+        }
+
+        /* --- Submit Button --- */
+        button[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-green);
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: 2px solid var(--primary-green);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: transparent;
+            color: var(--primary-green);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.2);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        /* --- Footer Link inside Form --- */
+        .form-footer {
+            margin-top: 25px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .form-footer a {
+            color: var(--primary-green);
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .form-footer a:hover {
+            color: var(--primary-gold);
+            text-decoration: underline;
+        }
+
+        /* --- Responsive Adjustments for Mobile --- */
+        @media (max-width: 480px) {
+            body {
+                padding: 20px 15px;
+                align-items: flex-start;
+                padding-top: 30px;
             }
-        }
 
-        @media(max-width:480px){
-            form{
-                padding:20px;
+            .form-card {
+                padding: 30px 20px;
+                max-width: 100%;
+                border-radius: 10px;
             }
 
-            h1{
-                font-size:24px;
+            .form-logo {
+                width: 60px;
+                height: 60px;
             }
 
-            input,
-            button{
-                font-size:14px;
-                padding:10px;
+            .form-card h1 {
+                font-size: 1.4rem;
+            }
+
+            .subtitle {
+                font-size: 0.8rem;
+                margin-bottom: 25px;
+            }
+
+            input[type="text"],
+            input[type="password"] {
+                padding: 12px 15px;
+                font-size: 0.95rem;
+            }
+
+            button[type="submit"] {
+                padding: 13px;
+                font-size: 0.95rem;
+            }
+
+            .theme-toggle {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
 
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark/Light Mode">🌙</button>
+
     <div class="container">
-        <h1>Create Admin</h1>
+        <div class="form-card">
+            <!-- Organization Logo -->
+            <img src="./images/cbyo.jpeg" alt="CBYO Logo" class="form-logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48Y2lyY2xlIGN4PSIyNSIgY3k9IjI1IiByPSIyNCIgZmlsbD0iIzBhMWY0NCIgc3Ryb2tlPSIjZmZkNzAwIiBzdHJva2Utd2lkdGg9IjMiLz48dGV4dCB4PSIyNSIgeT0iMzAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtd2VpZ2h0PSJib2xkIj5DQllPPC90ZXh0Pjwvc3ZnPg=='">
+            
+            <h1>Create Admin</h1>
+            <p class="subtitle">Add a New Administrator</p>
 
-        <form id="adminForm">
-            <input
-                type="text"
-                id="username"
-                placeholder="Enter Username"
-                required
-            >
+            <!-- 
+                IMPORTANT: Functionality untouched. 
+                Form ID, input IDs, and script src remain exactly the same.
+            -->
+            <form id="adminForm">
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter Username"
+                    required
+                >
 
-            <input
-                type="password"
-                id="password"
-                placeholder="Enter Password"
-                required
-            >
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter Password"
+                    required
+                >
 
-            <button type="submit">Create Admin</button>
-        </form>
+                <button type="submit">Create Admin</button>
+            </form>
+
+            <div class="form-footer">
+                <a href="manage.html">← Back to Dashboard</a>
+            </div>
+        </div>
     </div>
 
+    <!-- Theme Toggle Logic (Added for UI consistency) -->
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateToggleIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateToggleIcon(newTheme);
+        });
+
+        function updateToggleIcon(theme) {
+            themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+    </script>
+
+    <!-- Your original admin script remains untouched -->
     <script src="../js/admin.js"></script>
 
 </body>

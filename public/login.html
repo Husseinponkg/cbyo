@@ -3,22 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
-    <link rel="stylesheet" href="./css/a.css">
+    <title>Login - Capacity Building for Youth Organization</title>
+    <style>
+        /* --- CSS Variables & Theme System --- */
+        :root {
+            --primary-dark-blue: #0a1f44;
+            --primary-gold: #ffd700;
+            --primary-green: #2e7d32;
+            --bg-body: #ffffff;
+            --bg-card: #f9f9f9;
+            --text-main: #1a1a1a;
+            --text-light: #555555;
+            --text-on-dark: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary-dark-blue: #0d2b5e;
+            --primary-gold: #ffd700;
+            --primary-green: #388e3c;
+            --bg-body: #0f1115;
+            --bg-card: #1a1d24;
+            --text-main: #f0f0f0;
+            --text-light: #b0b0b0;
+            --text-on-dark: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        /* --- Global Reset --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            transition: var(--transition);
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* --- Theme Toggle Button --- */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-gold);
+            color: var(--primary-dark-blue);
+            border: 2px solid var(--primary-dark-blue);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        /* --- Login Container --- */
+        .container {
+            background: var(--bg-card);
+            width: 100%;
+            max-width: 420px;
+            padding: 45px 35px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border-top: 8px solid var(--primary-gold);
+            border-left: 1px solid rgba(0,0,0,0.05);
+            border-right: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        [data-theme="dark"] .container {
+            border-left-color: rgba(255,255,255,0.05);
+            border-right-color: rgba(255,255,255,0.05);
+            border-bottom-color: rgba(255,255,255,0.05);
+        }
+
+        /* Logo placeholder inside the login box */
+        .login-logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-gold);
+            background: white;
+            margin: 0 auto 20px;
+            display: block;
+        }
+
+        .container h1 {
+            color: var(--primary-dark-blue);
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 5px;
+        }
+
+        [data-theme="dark"] .container h1 {
+            color: var(--primary-gold);
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- Form Styling --- */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--bg-body);
+            color: var(--text-main);
+            transition: var(--transition);
+            outline: none;
+        }
+
+        [data-theme="dark"] input[type="text"],
+        [data-theme="dark"] input[type="password"] {
+            border-color: #333;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+
+        input::placeholder {
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+
+        /* --- Login Button --- */
+        button[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-green);
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: 2px solid var(--primary-green);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: transparent;
+            color: var(--primary-green);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.2);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        /* --- Footer Link inside Login --- */
+        .login-footer {
+            margin-top: 25px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .login-footer a {
+            color: var(--primary-green);
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .login-footer a:hover {
+            color: var(--primary-gold);
+            text-decoration: underline;
+        }
+
+        /* --- Responsive Adjustments for Mobile --- */
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+                align-items: flex-start;
+                padding-top: 40px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                max-width: 100%;
+                border-radius: 10px;
+            }
+
+            .login-logo {
+                width: 60px;
+                height: 60px;
+            }
+
+            .container h1 {
+                font-size: 1.4rem;
+            }
+
+            .subtitle {
+                font-size: 0.8rem;
+                margin-bottom: 25px;
+            }
+
+            input[type="text"],
+            input[type="password"] {
+                padding: 13px 15px;
+                font-size: 0.95rem;
+            }
+
+            button[type="submit"] {
+                padding: 13px;
+                font-size: 0.95rem;
+            }
+
+            .theme-toggle {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <center><h1>Login Here</h1></center>
 
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark/Light Mode">🌙</button>
+
+    <div class="container">
+        <!-- Organization Logo -->
+        <img src="./images/cbyo.jpeg" alt="CBYO Logo" class="login-logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48Y2lyY2xlIGN4PSIyNSIgY3k9IjI1IiByPSIyNCIgZmlsbD0iIzBhMWY0NCIgc3Ryb2tlPSIjZmZkNzAwIiBzdHJva2Utd2lkdGg9IjMiLz48dGV4dCB4PSIyNSIgeT0iMzAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtd2VpZ2h0PSJib2xkIj5DQllPPC90ZXh0Pjwvc3ZnPg=='">
+        
+        <h1>Login Here</h1>
+        <p class="subtitle">Member Access Portal</p>
+
+        <!-- The functionality and IDs here are kept exactly the same -->
         <form id="loginForm">
             <input type="text" id="username" placeholder="Username" required>
-
             <input type="password" id="password" placeholder="Password" required>
-
             <button type="submit">Login</button>
         </form>
+
+        <div class="login-footer">
+            Don't have an account? <a href="reg.html">Register Here</a>
+        </div>
     </div>
 
+    <!-- Theme Toggle Logic (Added for UI consistency) -->
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateToggleIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateToggleIcon(newTheme);
+        });
+
+        function updateToggleIcon(theme) {
+            themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+    </script>
+
+    <!-- Your original authentication script remains untouched -->
     <script src="./js/auth.js"></script>
 </body>
 </html>

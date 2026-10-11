@@ -3,131 +3,601 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Capacity Youth Building Organization</title>
-
+    <title>About Us - Capacity Building for Youth Organization</title>
     <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
+        /* --- CSS Variables & Theme System --- */
+        :root {
+            --primary-dark-blue: #0a1f44;
+            --primary-gold: #ffd700;
+            --primary-green: #2e7d32;
+            --bg-body: #ffffff;
+            --bg-card: #f9f9f9;
+            --text-main: #1a1a1a;
+            --text-light: #555555;
+            --text-on-dark: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
         }
 
-        body{
-            font-family:Arial, sans-serif;
-            line-height:1.6;
-            background:#f4f4f4;
+        [data-theme="dark"] {
+            --primary-dark-blue: #0d2b5e;
+            --primary-gold: #ffd700;
+            --primary-green: #388e3c;
+            --bg-body: #0f1115;
+            --bg-card: #1a1d24;
+            --text-main: #f0f0f0;
+            --text-light: #b0b0b0;
+            --text-on-dark: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
-        header{
-            background:rgb(3,175,255);
-            color:white;
-            padding:20px;
-            text-align:center;
+        /* --- Global Reset --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        nav{
-            background:gold;
-            padding:15px;
-            text-align:center;
+        html {
+            scroll-behavior: smooth;
         }
 
-        nav a{
-            text-decoration:none;
-            color:white;
-            background:rgb(3,175,255);
-            padding:10px 15px;
-            margin:5px;
-            border-radius:5px;
-            display:inline-block;
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            transition: var(--transition);
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll on mobile */
         }
 
-        .container{
-            width:90%;
-            max-width:1200px;
-            margin:auto;
-            padding:30px 0;
+        a {
+            text-decoration: none;
+            color: inherit;
         }
 
-        .section{
-            background:white;
-            padding:25px;
-            margin-bottom:20px;
-            border-radius:10px;
-            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        /* --- Theme Toggle Button --- */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-gold);
+            color: var(--primary-dark-blue);
+            border: 2px solid var(--primary-dark-blue);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
         }
 
-        .section h2{
-            color:rgb(3,175,255);
-            margin-bottom:15px;
+        /* --- Header --- */
+        header {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            padding: 12px 4%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--primary-dark-blue);
+            transition: var(--transition);
         }
 
-        .gallery{
-            display:grid;
-            grid-template-columns:repeat(3,1fr);
-            gap:20px;
-            margin-top:20px;
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary-dark-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex: 1;
+            min-width: 0; /* Allows text to truncate if needed */
         }
 
-        .gallery img{
-            width:100%;
-            height:250px;
-            object-fit:cover;
-            border-radius:10px;
+        [data-theme="dark"] .header-brand {
+            color: var(--primary-gold);
         }
 
-        footer{
-            background:rgb(3,175,255);
-            color:white;
-            text-align:center;
-            padding:15px;
-            margin-top:20px;
+        .logo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-gold);
+            background: white;
+            flex-shrink: 0;
         }
 
-        @media(max-width:768px){
-            .gallery{
-                grid-template-columns:repeat(2,1fr);
+        .brand-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* --- Navigation (Desktop) --- */
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            align-items: center;
+        }
+
+        nav a {
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            color: var(--text-main);
+            position: relative;
+            padding: 5px 0;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-green);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after, nav a.active::after {
+            width: 100%;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-green);
+        }
+
+        /* --- Mobile Menu Button (3 Dots) --- */
+        .menu-btn {
+            display: none; 
+            background: transparent;
+            border: none;
+            color: var(--primary-dark-blue);
+            font-size: 30px;
+            cursor: pointer;
+            padding: 5px;
+            transition: var(--transition);
+            line-height: 1;
+            z-index: 102;
+        }
+
+        [data-theme="dark"] .menu-btn {
+            color: var(--primary-gold);
+        }
+
+        /* --- Page Hero Banner --- */
+        .page-hero {
+            background-color: var(--primary-dark-blue);
+            color: var(--text-on-dark);
+            padding: 60px 4%;
+            text-align: center;
+            border-bottom: 5px solid var(--primary-gold);
+        }
+
+        .page-hero h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-gold);
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .page-hero p {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.85);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* --- Main Content & Sections --- */
+        main {
+            padding: 40px 4%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section {
+            background: var(--bg-card);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--primary-green);
+            transition: var(--transition);
+        }
+
+        .section:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .section h2 {
+            color: var(--primary-dark-blue);
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 3px solid var(--primary-gold);
+            display: inline-block;
+            padding-bottom: 5px;
+            line-height: 1.3;
+        }
+
+        [data-theme="dark"] .section h2 {
+            color: var(--primary-gold);
+        }
+
+        .section p {
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        /* --- Styled Lists for Values and Activities --- */
+        .styled-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .styled-list li {
+            background: var(--bg-body);
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        [data-theme="dark"] .styled-list li {
+            border-color: rgba(255,255,255,0.05);
+        }
+
+        .styled-list li::before {
+            content: '✓';
+            color: var(--primary-green);
+            font-weight: bold;
+            font-size: 1rem;
+            background: rgba(46, 125, 50, 0.1);
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* --- Gallery Section --- */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.02);
+            border-color: var(--primary-gold);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--primary-dark-blue);
+            color: var(--text-on-dark);
+            padding: 50px 4% 20px;
+            border-top: 8px solid var(--primary-gold);
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-col h3 {
+            color: var(--primary-gold);
+            margin-bottom: 15px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--primary-green);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .footer-col p, .footer-col a {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.9rem;
+            line-height: 2;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .footer-col a:hover {
+            color: var(--primary-gold);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* =========================================
+           RESPONSIVE ADJUSTMENTS (MOBILE FIXES)
+           ========================================= */
+
+        @media (max-width: 992px) {
+            .page-hero h1 { font-size: 2rem; }
+        }
+
+        /* Tablet & Mobile */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 12px 15px;
+            }
+
+            .header-brand {
+                font-size: 0.85rem;
+                flex: 1;
+                margin-right: 10px;
+            }
+
+            .brand-text {
+                font-size: 0.8rem;
+            }
+
+            .logo {
+                width: 38px;
+                height: 38px;
+            }
+
+            /* Show 3 dots menu button */
+            .menu-btn {
+                display: block;
+            }
+
+            /* Hide standard nav links, turn into dropdown */
+            nav {
+                width: 100%;
+                display: block;
+                position: static;
+            }
+
+            nav ul {
+                display: none; 
+                flex-direction: column;
+                width: 100%;
+                background-color: var(--bg-body);
+                position: absolute;
+                top: 100%;
+                left: 0;
+                padding: 15px 20px;
+                border-bottom: 4px solid var(--primary-gold);
+                box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+                gap: 0;
+                z-index: 101;
+            }
+
+            /* Show nav when active */
+            nav ul.active {
+                display: flex;
+            }
+
+            nav li {
+                width: 100%;
+                border-bottom: 1px solid rgba(0,0,0,0.05);
+            }
+
+            [data-theme="dark"] nav li {
+                border-color: rgba(255,255,255,0.05);
+            }
+
+            nav li:last-child {
+                border-bottom: none;
+            }
+
+            nav a {
+                display: block;
+                width: 100%;
+                text-align: center;
+                padding: 15px 10px;
+                font-size: 0.95rem;
+            }
+
+            nav a::after {
+                display: none; /* Remove underline animation on mobile */
+            }
+
+            .page-hero { padding: 45px 20px; }
+            .page-hero h1 { font-size: 1.7rem; }
+            .page-hero p { font-size: 0.95rem; }
+            
+            main { padding: 30px 15px; }
+            
+            .section {
+                padding: 25px 20px;
+                margin-bottom: 25px;
+            }
+            
+            .section h2 {
+                font-size: 1.35rem;
+            }
+
+            .styled-list {
+                grid-template-columns: 1fr; /* Force single column */
+                gap: 10px;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr; /* Force single column */
+                gap: 15px;
+            }
+
+            .gallery img {
+                height: 200px;
             }
         }
 
-        @media(max-width:480px){
-            .gallery{
-                grid-template-columns:1fr;
+        /* Small Phones */
+        @media (max-width: 480px) {
+            .header-brand {
+                font-size: 0.75rem;
             }
 
-            nav a{
-                display:block;
-                margin:10px auto;
-                width:90%;
+            .brand-text {
+                font-size: 0.7rem;
+            }
+
+            .logo { 
+                width: 34px; 
+                height: 34px; 
+            }
+
+            .page-hero { padding: 35px 15px; }
+            .page-hero h1 { font-size: 1.4rem; }
+            .page-hero p { font-size: 0.85rem; }
+            
+            .section {
+                padding: 20px 15px;
+                border-left-width: 4px;
+            }
+            
+            .section h2 {
+                font-size: 1.15rem;
+            }
+
+            .section p {
+                font-size: 0.9rem;
+            }
+
+            .styled-list li {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+            }
+
+            .styled-list li::before {
+                width: 22px;
+                height: 22px;
+                font-size: 0.85rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 25px;
+            }
+            .footer-col a:hover { padding-left: 0; }
+            
+            .theme-toggle {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
 
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark/Light Mode">🌙</button>
+
+    <!-- Header -->
     <header>
-        <h1>About Capacity Youth Building Organization</h1>
+        <div class="header-brand">
+            <img src="./images/cbyo.jpeg" alt="CBYO Logo" class="logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48Y2lyY2xlIGN4PSIyNSIgY3k9IjI1IiByPSIyNCIgZmlsbD0iIzBhMWY0NCIgc3Ryb2tlPSIjZmZkNzAwIiBzdHJva2Utd2lkdGg9IjMiLz48dGV4dCB4PSIyNSIgeT0iMzAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtd2VpZ2h0PSJib2xkIj5DQllPPC90ZXh0Pjwvc3ZnPg=='">
+            <span class="brand-text">Capacity Building for Youth Organization</span>
+        </div>
+        
+        <!-- 3 Dots Mobile Menu Button -->
+        <button class="menu-btn" id="menuBtn" aria-label="Toggle Navigation Menu">⋮</button>
+
+        <nav>
+            <ul id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About Us</a></li>
+                <li><a href="contacts.html">Contacts</a></li>
+                <li><a href="reg.html">Register</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About Us</a>
-        <a href="contacts.html">Contacts</a>
-        <a href="reg.html">Register</a>
-        <a href="login.html">Login</a>
-    </nav>
+    <!-- Page Hero Banner -->
+    <section class="page-hero">
+        <h1>About Us</h1>
+        <p>Building the capacity of youth to become productive, responsible, and successful members of society.</p>
+    </section>
 
-    <div class="container">
-
+    <!-- Main Content -->
+    <main>
+        <!-- Who We Are -->
         <div class="section">
             <h2>Who We Are</h2>
             <p>
-                Capacity Youth Building Organization (CBYO) is a youth-focused
+                Capacity Building for Youth Organization (CBYO) is a youth-focused
                 organization dedicated to empowering young people through education,
                 leadership training, skills development, entrepreneurship, and
                 community engagement programs.
             </p>
         </div>
 
+        <!-- Mission -->
         <div class="section">
             <h2>Our Mission</h2>
             <p>
@@ -137,6 +607,7 @@
             </p>
         </div>
 
+        <!-- Vision -->
         <div class="section">
             <h2>Our Vision</h2>
             <p>
@@ -145,9 +616,10 @@
             </p>
         </div>
 
+        <!-- Core Values -->
         <div class="section">
             <h2>Our Core Values</h2>
-            <ul>
+            <ul class="styled-list">
                 <li>Integrity</li>
                 <li>Innovation</li>
                 <li>Teamwork</li>
@@ -157,9 +629,10 @@
             </ul>
         </div>
 
+        <!-- Our Activities -->
         <div class="section">
             <h2>Our Activities</h2>
-            <ul>
+            <ul class="styled-list">
                 <li>Youth Leadership Training</li>
                 <li>Entrepreneurship Workshops</li>
                 <li>Community Development Projects</li>
@@ -169,24 +642,102 @@
             </ul>
         </div>
 
+        <!-- Gallery -->
         <div class="section">
             <h2>Gallery</h2>
-
             <div class="gallery">
-                <img src="./images/img1.jpg" alt="Youth Activity">
-                <img src="./images/img2.jpg" alt="Training Session">
-                <img src="./images/img3.jpg" alt="Community Project">
-                <img src="./images/img4.jpg" alt="Workshop">
-                <img src="./images/img5.jpg" alt="Leadership Program">
-                <img src="./images/img6.jpg" alt="Youth Event">
+                <img src="./images/_MG_0231.JPG" alt="Youth Activity" onerror="this.src='https://placehold.co/400x250/0a1f44/ffd700?text=Youth+Activity'">
+                <img src="./images/IMG_5483.JPG.jpeg" alt="Training Session" onerror="this.src='https://placehold.co/400x250/2e7d32/ffffff?text=Training+Session'">
+                <img src="./images/IMG_6611.JPG (1).jpeg" alt="Community Project" onerror="this.src='https://placehold.co/400x250/ffd700/0a1f44?text=Community+Project'">
+                <img src="./images/IMG_6612.JPG.jpeg" alt="Workshop" onerror="this.src='https://placehold.co/400x250/0a1f44/ffd700?text=Workshop'">
+                <img src="./images/IMG_5521.JPG.jpeg" alt="Leadership Program" onerror="this.src='https://placehold.co/400x250/2e7d32/ffffff?text=Leadership+Program'">
+                <img src="./images/IMG_6605.JPG.jpeg" alt="Youth Event" onerror="this.src='https://placehold.co/400x250/ffd700/0a1f44?text=Youth+Event'">
             </div>
         </div>
+    </main>
 
-    </div>
-
+    <!-- Footer -->
     <footer>
-        &copy; 2026 Capacity Youth Building Organization. All Rights Reserved.
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>CBYO</h3>
+                <p>Capacity Building for Youth Organization is a registered non-profit dedicated to youth empowerment, education, and community development.</p>
+                <p><strong>Headquarters:</strong> Dodoma, Tanzania</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="contacts.html">Contacts</a>
+                <a href="reg.html">Register</a>
+                <a href="login.html">Login</a>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <p>✉️ info@cbyo.org</p>
+                <p>📞 +255 744 220 587</p>
+                <p>📍 Dodoma, Tanzania</p>
+            </div>
+            <div class="footer-col">
+                <h3>Follow Us</h3>
+                <a href="https://www.linkedin.com/in/capacity-building-for-youth1-03113a3aa?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://whatsapp.com/channel/0029VbBurVVA2pLFQChVKD3Z" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                <a href="https://www.facebook.com/profile.php?id=61587506245373" target="_blank" rel="noopener noreferrer">Facebook</a>
+                <a href="https://youtube.com/@capacitybuildingforyouthorgani?si=eRw08VCYtm6dbVAt" target="_blank" rel="noopener noreferrer">YouTube</a>
+                <a href="https://www.instagram.com/capacitybuildingfor_youth1?stkn=Zm9pOG16dDV6N3hi&utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Capacity Building for Youth Organization. All Rights Reserved.
+        </div>
     </footer>
 
+    <!-- JavaScript for Theme and Mobile Menu -->
+    <script>
+        // --- Theme Toggle Logic ---
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateToggleIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateToggleIcon(newTheme);
+        });
+
+        function updateToggleIcon(theme) {
+            themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+
+        // --- Mobile Menu (3 Dots) Logic ---
+        const menuBtn = document.getElementById('menuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            navLinks.classList.toggle('active');
+            menuBtn.textContent = navLinks.classList.contains('active') ? '✕' : '⋮';
+        });
+
+        // Close menu when a link is clicked (for single-page apps)
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuBtn.textContent = '⋮';
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
+                navLinks.classList.remove('active');
+                menuBtn.textContent = '⋮';
+            }
+        });
+    </script>
 </body>
 </html>

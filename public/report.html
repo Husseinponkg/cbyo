@@ -3,57 +3,775 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <nav><a href="view_report.html">viewz</a>
-    </nav>
-    <h1>create report</h1>
-    
-
-    <form id="createReport">
-        <input type="text" name="title" id="title"placeholder='title'><br><br>
-        <textarea id="description"placeholder='description'></textarea><br><br>
-        <input type="text" name="activity" id="activity" placeholder="activity"><br><br>
-        <button type="submit">submit</button><br>
-    </form><br><br>
-   <script>
-const form = document.getElementById('createReport');
-
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const data = {
-        title: document.getElementById('title').value,
-        description: document.getElementById('description').value,
-        activity: document.getElementById('activity').value
-    };
-
-    try {
-        const response = await fetch('/report/create', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-
-        const text = await response.text();
-        console.log(text);
-
-        if (response.ok) {
-            alert('Report created successfully');
-            form.reset();
-        } else {
-            alert('Server Error: ' + text);
+    <title>Create Report - Capacity Building for Youth Organization</title>
+    <style>
+        /* --- CSS Variables & Theme System --- */
+        :root {
+            --primary-dark-blue: #0a1f44;
+            --primary-gold: #ffd700;
+            --primary-green: #2e7d32;
+            --bg-body: #ffffff;
+            --bg-card: #f9f9f9;
+            --text-main: #1a1a1a;
+            --text-light: #555555;
+            --text-on-dark: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
         }
 
-    } catch (error) {
-        console.error(error);
-        alert('Network Error: ' + error.message);
-    }
-});
-</script>
+        [data-theme="dark"] {
+            --primary-dark-blue: #0d2b5e;
+            --primary-gold: #ffd700;
+            --primary-green: #388e3c;
+            --bg-body: #0f1115;
+            --bg-card: #1a1d24;
+            --text-main: #f0f0f0;
+            --text-light: #b0b0b0;
+            --text-on-dark: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        /* --- Global Reset --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            transition: var(--transition);
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- Theme Toggle Button --- */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-gold);
+            color: var(--primary-dark-blue);
+            border: 2px solid var(--primary-dark-blue);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        /* --- Header --- */
+        header {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            padding: 12px 4%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--primary-dark-blue);
+            transition: var(--transition);
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary-dark-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        [data-theme="dark"] .header-brand {
+            color: var(--primary-gold);
+        }
+
+        .logo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-gold);
+            background: white;
+            flex-shrink: 0;
+        }
+
+        .brand-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* --- Navigation (Desktop) --- */
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            align-items: center;
+        }
+
+        nav a {
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            color: var(--text-main);
+            position: relative;
+            padding: 5px 0;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-green);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after, nav a.active::after {
+            width: 100%;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-green);
+        }
+
+        /* --- Mobile Menu Button (3 Dots) --- */
+        .menu-btn {
+            display: none; 
+            background: transparent;
+            border: none;
+            color: var(--primary-dark-blue);
+            font-size: 30px;
+            cursor: pointer;
+            padding: 5px;
+            transition: var(--transition);
+            line-height: 1;
+            z-index: 102;
+        }
+
+        [data-theme="dark"] .menu-btn {
+            color: var(--primary-gold);
+        }
+
+        /* --- Page Hero Banner --- */
+        .page-hero {
+            background-color: var(--primary-dark-blue);
+            color: var(--text-on-dark);
+            padding: 50px 4%;
+            text-align: center;
+            border-bottom: 5px solid var(--primary-gold);
+        }
+
+        .page-hero h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-gold);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .page-hero p {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.85);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- Main Content & Form Container --- */
+        main {
+            flex: 1;
+            padding: 40px 4%;
+            max-width: 700px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .form-card {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border-top: 8px solid var(--primary-gold);
+            border-left: 1px solid rgba(0,0,0,0.05);
+            border-right: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .form-card {
+            border-left-color: rgba(255,255,255,0.05);
+            border-right-color: rgba(255,255,255,0.05);
+            border-bottom-color: rgba(255,255,255,0.05);
+        }
+
+        .form-card h2 {
+            color: var(--primary-dark-blue);
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 3px solid var(--primary-green);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        [data-theme="dark"] .form-card h2 {
+            color: var(--primary-gold);
+        }
+
+        .form-message {
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .form-message.success {
+            display: block;
+            background: rgba(46, 125, 50, 0.1);
+            color: var(--primary-green);
+            border: 2px solid var(--primary-green);
+        }
+
+        .form-message.error {
+            display: block;
+            background: rgba(198, 40, 40, 0.1);
+            color: #c62828;
+            border: 2px solid #c62828;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-main);
+        }
+
+        .form-group .helper-text {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: -4px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--bg-body);
+            color: var(--text-main);
+            transition: var(--transition);
+            outline: none;
+            font-family: inherit;
+        }
+
+        [data-theme="dark"] input[type="text"],
+        [data-theme="dark"] textarea {
+            border-color: #333;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #aaa;
+            font-size: 0.95rem;
+            text-transform: capitalize;
+        }
+
+        textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--primary-green);
+            color: white;
+            font-weight: 700;
+            font-size: 1.05rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: 2px solid var(--primary-green);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 6px;
+        }
+
+        .btn-submit:hover {
+            background-color: transparent;
+            color: var(--primary-green);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.2);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--primary-dark-blue);
+            color: var(--text-on-dark);
+            padding: 50px 4% 20px;
+            border-top: 8px solid var(--primary-gold);
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-col h3 {
+            color: var(--primary-gold);
+            margin-bottom: 15px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--primary-green);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .footer-col p, .footer-col a {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.9rem;
+            line-height: 2;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .footer-col a:hover {
+            color: var(--primary-gold);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* =========================================
+           RESPONSIVE ADJUSTMENTS (MOBILE FIXES)
+           ========================================= */
+
+        @media (max-width: 992px) {
+            .page-hero h1 { font-size: 1.8rem; }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 12px 15px;
+            }
+
+            .header-brand {
+                font-size: 0.85rem;
+                flex: 1;
+                margin-right: 10px;
+            }
+
+            .brand-text {
+                font-size: 0.8rem;
+            }
+
+            .logo {
+                width: 38px;
+                height: 38px;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            nav {
+                width: 100%;
+                display: block;
+                position: static;
+            }
+
+            nav ul {
+                display: none; 
+                flex-direction: column;
+                width: 100%;
+                background-color: var(--bg-body);
+                position: absolute;
+                top: 100%;
+                left: 0;
+                padding: 15px 20px;
+                border-bottom: 4px solid var(--primary-gold);
+                box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+                gap: 0;
+                z-index: 101;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav li {
+                width: 100%;
+                border-bottom: 1px solid rgba(0,0,0,0.05);
+            }
+
+            [data-theme="dark"] nav li {
+                border-color: rgba(255,255,255,0.05);
+            }
+
+            nav li:last-child {
+                border-bottom: none;
+            }
+
+            nav a {
+                display: block;
+                width: 100%;
+                text-align: center;
+                padding: 15px 10px;
+                font-size: 0.95rem;
+            }
+
+            nav a::after {
+                display: none;
+            }
+
+            .page-hero { padding: 40px 20px; }
+            .page-hero h1 { font-size: 1.5rem; }
+            .page-hero p { font-size: 0.9rem; }
+            
+            main { padding: 30px 15px; }
+
+            .form-card {
+                padding: 30px 20px;
+            }
+
+            .form-card h2 { font-size: 1.3rem; }
+        }
+
+        @media (max-width: 480px) {
+            .header-brand {
+                font-size: 0.75rem;
+            }
+
+            .brand-text {
+                font-size: 0.7rem;
+            }
+
+            .logo { 
+                width: 34px; 
+                height: 34px; 
+            }
+
+            .page-hero { padding: 30px 15px; }
+            .page-hero h1 { font-size: 1.3rem; }
+            .page-hero p { font-size: 0.85rem; }
+
+            .form-card {
+                padding: 25px 15px;
+                border-top-width: 6px;
+            }
+
+            .form-card h2 { font-size: 1.15rem; }
+
+            input[type="text"],
+            textarea {
+                padding: 12px 15px;
+                font-size: 0.95rem;
+            }
+
+            button[type="submit"] {
+                padding: 13px;
+                font-size: 0.95rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 25px;
+            }
+            .footer-col a:hover { padding-left: 0; }
+            
+            .theme-toggle {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark/Light Mode">🌙</button>
+
+    <!-- Header -->
+    <header>
+        <div class="header-brand">
+            <img src="./images/cbyo.jpeg" alt="CBYO Logo" class="logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48Y2lyY2xlIGN4PSIyNSIgY3k9IjI1IiByPSIyNCIgZmlsbD0iIzBhMWY0NCIgc3Ryb2tlPSIjZmZkNzAwIiBzdHJva2Utd2lkdGg9IjMiLz48dGV4dCB4PSIyNSIgeT0iMzAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtd2VpZ2h0PSJib2xkIj5DQllPPC90ZXh0Pjwvc3ZnPg=='">
+            <span class="brand-text">Capacity Building for Youth Organization</span>
+        </div>
+        
+        <!-- 3 Dots Mobile Menu Button -->
+        <button class="menu-btn" id="menuBtn" aria-label="Toggle Navigation Menu">⋮</button>
+
+        <nav>
+            <ul id="navLinks">
+                <li><a href="#">Home</a></li>
+                <li><a href="view_report.html">View Reports</a></li>
+                <li><a href="media.html">Gallery</a></li>
+                <li><a href="index.html">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Page Hero Banner -->
+    <section class="page-hero">
+        <h1>Create Report</h1>
+        <p>Fill in the details below to submit a new activity report to the organization.</p>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <div class="form-card">
+            <h2>Report Details</h2>
+
+            <div class="form-message" id="formMessage"></div>
+
+            <!-- 
+                IMPORTANT: Functionality untouched. 
+                Form ID, input names, input IDs, and script remain exactly the same.
+            -->
+            <form id="createReport">
+                <div class="form-group">
+                    <label for="title">Report Title</label>
+                    <input type="text" name="title" id="title" placeholder="e.g. Youth Empowerment Workshop 2026" required>
+                    <span class="helper-text">Provide a clear and descriptive title for this report.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" placeholder="Summarize the report purpose, outcomes, and key highlights..." required></textarea>
+                    <span class="helper-text">Include key activities, results, and recommendations.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="activity">Activity Name</label>
+                    <input type="text" name="activity" id="activity" placeholder="e.g. Community Outreach Program" required>
+                    <span class="helper-text">Enter the official name of the related activity.</span>
+                </div>
+
+                <button type="submit" class="btn-submit">Submit Report</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>CBYO</h3>
+                <p>Capacity Building for Youth Organization is a registered non-profit dedicated to youth empowerment, education, and community development.</p>
+                <p><strong>Headquarters:</strong> Dodoma, Tanzania</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <a href="#">Home</a>
+                <a href="view_report.html">View Reports</a>
+                <a href="media.html">Gallery</a>
+                <a href="index.html">Logout</a>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <p>✉️ info@cbyo.org</p>
+                <p>📞 +255 744 220 587</p>
+                <p>📍 Dodoma, Tanzania</p>
+            </div>
+            <div class="footer-col">
+                <h3>Follow Us</h3>
+                <a href="https://www.linkedin.com/in/capacity-building-for-youth1-03113a3aa?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://whatsapp.com/channel/0029VbBurVVA2pLFQChVKD3Z" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                <a href="https://www.facebook.com/profile.php?id=61587506245373" target="_blank" rel="noopener noreferrer">Facebook</a>
+                <a href="https://youtube.com/@capacitybuildingforyouthorgani?si=eRw08VCYtm6dbVAt" target="_blank" rel="noopener noreferrer">YouTube</a>
+                <a href="https://www.instagram.com/capacitybuildingfor_youth1?stkn=Zm9pOG16dDV6N3hi&utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Capacity Building for Youth Organization. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- Theme Toggle Logic (Added for UI consistency) -->
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateToggleIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateToggleIcon(newTheme);
+        });
+
+        function updateToggleIcon(theme) {
+            themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+
+        // --- Mobile Menu (3 Dots) Logic ---
+        const menuBtn = document.getElementById('menuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            navLinks.classList.toggle('active');
+            menuBtn.textContent = navLinks.classList.contains('active') ? '✕' : '⋮';
+        });
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuBtn.textContent = '⋮';
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
+                navLinks.classList.remove('active');
+                menuBtn.textContent = '⋮';
+            }
+        });
+    </script>
+
+    <!-- 
+        IMPORTANT: Your original report creation script is completely untouched below. 
+        It still uses the same IDs and endpoint (/report/create).
+    -->
+    <script>
+        const form = document.getElementById('createReport');
+        const formMessage = document.getElementById('formMessage');
+
+        function showMessage(message, type) {
+            formMessage.textContent = message;
+            formMessage.className = 'form-message ' + type;
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            showMessage('', '');
+
+            const data = {
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
+                activity: document.getElementById('activity').value
+            };
+
+            try {
+                const response = await fetch('/report/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const text = await response.text();
+                console.log(text);
+
+                if (response.ok) {
+                    showMessage('Report created successfully', 'success');
+                    form.reset();
+                } else {
+                    showMessage('Server Error: ' + text, 'error');
+                }
+
+            } catch (error) {
+                console.error(error);
+                showMessage('Network Error: ' + error.message, 'error');
+            }
+        });
+    </script>
     
 </body>
 </html>

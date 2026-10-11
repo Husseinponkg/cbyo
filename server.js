@@ -1,5 +1,5 @@
 const express=require('express');
-const port=3000;
+const port=process.env.PORT || 3000;
 const app=express();
 const jwt=require('jsonwebtoken');
 const session=require('express-session');
@@ -10,7 +10,6 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use('/uploads', express.static('public/uploads'));
 app.use(express.urlencoded({extended:true}));
-
 
 app.use(session({
     secret:process.env.Secret,
@@ -32,6 +31,6 @@ app.use('/admin',adminRoutes);
 app.use('/report',reportrouter);
 app.use('/media',mediarouter);
 
-app.listen(port,()=>{
-    console.log(`server is running in port http://localhost:${port}`);
+app.listen(port,'0.0.0.0',()=>{
+    console.log(`server is running on port ${port}`);
 });

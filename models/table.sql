@@ -1,8 +1,4 @@
-create DATABASE cybo;
 
-
-
-use cybo;
 
 create table admin(
     id int primary key auto_increment,

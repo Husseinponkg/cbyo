@@ -3,189 +3,594 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBO Dashboard</title>
-
+    <title>Member Dashboard - Capacity Building for Youth Organization</title>
     <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
+        /* --- CSS Variables & Theme System --- */
+        :root {
+            --primary-dark-blue: #0a1f44;
+            --primary-gold: #ffd700;
+            --primary-green: #2e7d32;
+            --bg-body: #ffffff;
+            --bg-card: #f9f9f9;
+            --text-main: #1a1a1a;
+            --text-light: #555555;
+            --text-on-dark: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
         }
 
-        body{
-            font-family:Arial, sans-serif;
-            background:#f4f4f4;
-            min-height:100vh;
-            display:flex;
-            flex-direction:column;
+        [data-theme="dark"] {
+            --primary-dark-blue: #0d2b5e;
+            --primary-gold: #ffd700;
+            --primary-green: #388e3c;
+            --bg-body: #0f1115;
+            --bg-card: #1a1d24;
+            --text-main: #f0f0f0;
+            --text-light: #b0b0b0;
+            --text-on-dark: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
-        /* Header */
-        h1{
-            background:rgb(3,175,255);
-            color:white;
-            text-align:center;
-            padding:20px;
+        /* --- Global Reset --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        h5{
-            text-align:center;
-            background:white;
-            padding:10px;
-            color:#555;
+        html {
+            scroll-behavior: smooth;
         }
 
-        /* Navigation */
-        nav{
-            background:gold;
-            display:flex;
-            justify-content:center;
-            flex-wrap:wrap;
-            gap:10px;
-            padding:15px;
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            transition: var(--transition);
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        nav a{
-            text-decoration:none;
-            background:rgb(3,175,255);
-            color:white;
-            padding:10px 15px;
-            border-radius:5px;
-            transition:0.3s;
+        a {
+            text-decoration: none;
+            color: inherit;
         }
 
-        nav a:hover{
-            background:rgb(0,140,220);
+        /* --- Theme Toggle Button --- */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-gold);
+            color: var(--primary-dark-blue);
+            border: 2px solid var(--primary-dark-blue);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
         }
 
-        /* Main Content */
-        .container{
-            flex:1;
-            display:flex;
-            gap:20px;
-            padding:20px;
+        /* --- Header --- */
+        header {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            padding: 12px 4%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--primary-dark-blue);
+            transition: var(--transition);
         }
 
-        /* Sidebar */
-        ul{
-            list-style:none;
-            width:250px;
-            background:white;
-            padding:20px;
-            border-radius:10px;
-            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary-dark-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex: 1;
+            min-width: 0;
         }
 
-        ul li{
-            margin-bottom:15px;
+        [data-theme="dark"] .header-brand {
+            color: var(--primary-gold);
         }
 
-        ul li a{
-            display:block;
-            text-decoration:none;
-            background:rgb(3,175,255);
-            color:white;
-            padding:12px;
-            border-radius:5px;
-            text-align:center;
+        .logo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-gold);
+            background: white;
+            flex-shrink: 0;
         }
 
-        ul li a:hover{
-            background:rgb(0,140,220);
+        .brand-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        /* Content Area */
-        .content{
-            flex:1;
-            background:white;
-            padding:25px;
-            border-radius:10px;
-            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        /* --- Navigation (Desktop) --- */
+        nav {
+            display: flex;
+            align-items: center;
         }
 
-        .content h2{
-            color:rgb(3,175,255);
-            margin-bottom:15px;
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            align-items: center;
         }
 
-        /* Footer */
-        footer{
-            background:rgb(3,175,255);
-            color:white;
-            text-align:center;
-            padding:15px;
+        nav a {
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            color: var(--text-main);
+            position: relative;
+            padding: 5px 0;
         }
 
-        /* Tablet */
-        @media(max-width:768px){
-            .container{
-                flex-direction:column;
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-green);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after, nav a.active::after {
+            width: 100%;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-green);
+        }
+
+        /* --- Mobile Menu Button (3 Dots) --- */
+        .menu-btn {
+            display: none; 
+            background: transparent;
+            border: none;
+            color: var(--primary-dark-blue);
+            font-size: 30px;
+            cursor: pointer;
+            padding: 5px;
+            transition: var(--transition);
+            line-height: 1;
+            z-index: 102;
+        }
+
+        [data-theme="dark"] .menu-btn {
+            color: var(--primary-gold);
+        }
+
+        /* --- Welcome Banner --- */
+        .welcome-banner {
+            background-color: var(--primary-dark-blue);
+            color: var(--text-on-dark);
+            padding: 40px 4%;
+            text-align: center;
+            border-bottom: 5px solid var(--primary-gold);
+        }
+
+        .welcome-banner h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-gold);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .welcome-banner h5 {
+            font-size: 1rem;
+            font-weight: 400;
+            color: rgba(255,255,255,0.85);
+            letter-spacing: 1px;
+            font-style: italic;
+        }
+
+        /* --- Main Layout (Sidebar + Content) --- */
+        .container {
+            flex: 1;
+            display: flex;
+            gap: 25px;
+            padding: 40px 4%;
+            max-width: 1300px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 260px;
+            flex-shrink: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            border-top: 5px solid var(--primary-gold);
+        }
+
+        .sidebar ul li {
+            margin-bottom: 12px;
+        }
+
+        .sidebar ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        .sidebar ul li a {
+            display: block;
+            text-decoration: none;
+            background: var(--primary-dark-blue);
+            color: var(--text-on-dark);
+            padding: 14px 18px;
+            border-radius: 6px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar ul li a:hover {
+            background: var(--primary-green);
+            border-left-color: var(--primary-gold);
+            transform: translateX(5px);
+        }
+
+        /* --- Content Area --- */
+        .content {
+            flex: 1;
+            background: var(--bg-card);
+            padding: 35px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            border-left: 6px solid var(--primary-green);
+        }
+
+        .content h2 {
+            color: var(--primary-dark-blue);
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 3px solid var(--primary-gold);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        [data-theme="dark"] .content h2 {
+            color: var(--primary-gold);
+        }
+
+        .content p {
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--primary-dark-blue);
+            color: var(--text-on-dark);
+            padding: 50px 4% 20px;
+            border-top: 8px solid var(--primary-gold);
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-col h3 {
+            color: var(--primary-gold);
+            margin-bottom: 15px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--primary-green);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .footer-col p, .footer-col a {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.9rem;
+            line-height: 2;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .footer-col a:hover {
+            color: var(--primary-gold);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* =========================================
+           RESPONSIVE ADJUSTMENTS (MOBILE FIXES)
+           ========================================= */
+
+        @media (max-width: 992px) {
+            .welcome-banner h1 { font-size: 1.5rem; }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 12px 15px;
             }
 
-            ul{
-                width:100%;
+            .header-brand {
+                font-size: 0.85rem;
+                flex: 1;
+                margin-right: 10px;
             }
+
+            .brand-text {
+                font-size: 0.8rem;
+            }
+
+            .logo {
+                width: 38px;
+                height: 38px;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            nav {
+                width: 100%;
+                display: block;
+                position: static;
+            }
+
+            nav ul {
+                display: none; 
+                flex-direction: column;
+                width: 100%;
+                background-color: var(--bg-body);
+                position: absolute;
+                top: 100%;
+                left: 0;
+                padding: 15px 20px;
+                border-bottom: 4px solid var(--primary-gold);
+                box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+                gap: 0;
+                z-index: 101;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav li {
+                width: 100%;
+                border-bottom: 1px solid rgba(0,0,0,0.05);
+            }
+
+            [data-theme="dark"] nav li {
+                border-color: rgba(255,255,255,0.05);
+            }
+
+            nav li:last-child {
+                border-bottom: none;
+            }
+
+            nav a {
+                display: block;
+                width: 100%;
+                text-align: center;
+                padding: 15px 10px;
+                font-size: 0.95rem;
+            }
+
+            nav a::after {
+                display: none;
+            }
+
+            .welcome-banner { padding: 35px 20px; }
+            .welcome-banner h1 { font-size: 1.3rem; }
+            .welcome-banner h5 { font-size: 0.9rem; }
+            
+            .container {
+                flex-direction: column;
+                padding: 25px 15px;
+                gap: 20px;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .sidebar ul {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .sidebar ul li {
+                margin-bottom: 0;
+            }
+
+            .sidebar ul li a {
+                text-align: center;
+                padding: 12px 10px;
+                font-size: 0.8rem;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+            }
+
+            .sidebar ul li a:hover {
+                border-left-color: transparent;
+                border-bottom-color: var(--primary-gold);
+                transform: translateY(-3px);
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+
+            .content h2 { font-size: 1.3rem; }
         }
 
-        /* Mobile */
-        @media(max-width:480px){
-
-            nav{
-                flex-direction:column;
-                align-items:center;
+        @media (max-width: 480px) {
+            .header-brand {
+                font-size: 0.75rem;
             }
 
-            nav a{
-                width:90%;
-                text-align:center;
+            .brand-text {
+                font-size: 0.7rem;
             }
 
-            h1{
-                font-size:24px;
+            .logo { 
+                width: 34px; 
+                height: 34px; 
             }
 
-            h5{
-                font-size:14px;
+            .welcome-banner { padding: 30px 15px; }
+            .welcome-banner h1 { font-size: 1.1rem; }
+            .welcome-banner h5 { font-size: 0.8rem; }
+            
+            .sidebar ul {
+                grid-template-columns: 1fr; /* Stack sidebar links on very small screens */
+            }
+
+            .content {
+                padding: 20px 15px;
+                border-left-width: 4px;
+            }
+
+            .content h2 { font-size: 1.1rem; }
+            .content p { font-size: 0.9rem; }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 25px;
+            }
+            .footer-col a:hover { padding-left: 0; }
+            
+            .theme-toggle {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
 
-    <h1>Welcome to Capacity Youth Building Organization</h1>
-    <h5>Karibu Sana Mwana CYBO</h5>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark/Light Mode">🌙</button>
 
-    <nav>
-        <a href="#">Home</a>
+    <!-- Header -->
+    <header>
+        <div class="header-brand">
+            <img src="./images/cbyo.jpeg" alt="CBYO Logo" class="logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48Y2lyY2xlIGN4PSIyNSIgY3k9IjI1IiByPSIyNCIgZmlsbD0iIzBhMWY0NCIgc3Ryb2tlPSIjZmZkNzAwIiBzdHJva2Utd2lkdGg9IjMiLz48dGV4dCB4PSIyNSIgeT0iMzAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtd2VpZ2h0PSJib2xkIj5DQllPPC90ZXh0Pjwvc3ZnPg=='">
+            <span class="brand-text">Capacity Building for Youth Organization</span>
+        </div>
         
-        <a href="view_report.html">View Reports</a>
-        <a href="media.html">Gallery</a>
-        <a href="index.html">Logout</a>
-    </nav>
+        <!-- 3 Dots Mobile Menu Button -->
+        <button class="menu-btn" id="menuBtn" aria-label="Toggle Navigation Menu">⋮</button>
 
+        <nav>
+            <ul id="navLinks">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="view_report.html">View Reports</a></li>
+                <li><a href="media.html">Gallery</a></li>
+                <li><a href="index.html">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Welcome Banner -->
+    <section class="welcome-banner">
+        <h1>Welcome to Capacity Building for Youth Organization</h1>
+        <h5>Karibu Sana Mwana CBYO</h5>
+    </section>
+
+    <!-- Main Layout -->
     <div class="container">
 
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="media.html">Gallery</a></li>
-            <li><a href="view_report.html">View Reports</a></li>
-            <li><a href="index.html">Logout</a></li>
-        </ul>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="media.html">Gallery</a></li>
+                <li><a href="view_report.html">View Reports</a></li>
+                <li><a href="index.html">Logout</a></li>
+            </ul>
+        </div>
 
+        <!-- Content Area -->
         <div class="content">
             <h2>Member Dashboard</h2>
 
             <p>
-                Welcome to the Capacity Youth Building Organization (CYBO)
+                Welcome to the Capacity Building for Youth Organization (CBYO)
                 member dashboard. Through this platform you can access
                 organization information, view reports, browse the media
                 gallery, and stay updated with activities and programs.
             </p>
 
-            <br>
-
             <p>
-                CYBO is dedicated to empowering youth through education,
+                CBYO is dedicated to empowering youth through education,
                 leadership development, entrepreneurship, community service,
                 and technology innovation.
             </p>
@@ -193,9 +598,85 @@
 
     </div>
 
+    <!-- Footer -->
     <footer>
-        © 2026 CYBO Foundation. All Rights Reserved.
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>CBYO</h3>
+                <p>Capacity Building for Youth Organization is a registered non-profit dedicated to youth empowerment, education, and community development.</p>
+                <p><strong>Headquarters:</strong> Dodoma, Tanzania</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <a href="#">Home</a>
+                <a href="view_report.html">View Reports</a>
+                <a href="media.html">Gallery</a>
+                <a href="index.html">Logout</a>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <p>✉️ info@cbyo.org</p>
+                <p>📞 +255 744 220 587</p>
+                <p>📍 Dodoma, Tanzania</p>
+            </div>
+            <div class="footer-col">
+                <h3>Follow Us</h3>
+                <a href="https://www.linkedin.com/in/capacity-building-for-youth1-03113a3aa?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://whatsapp.com/channel/0029VbBurVVA2pLFQChVKD3Z" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                <a href="https://www.facebook.com/profile.php?id=61587506245373" target="_blank" rel="noopener noreferrer">Facebook</a>
+                <a href="https://youtube.com/@capacitybuildingforyouthorgani?si=eRw08VCYtm6dbVAt" target="_blank" rel="noopener noreferrer">YouTube</a>
+                <a href="https://www.instagram.com/capacitybuildingfor_youth1?stkn=Zm9pOG16dDV6N3hi&utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Capacity Building for Youth Organization. All Rights Reserved.
+        </div>
     </footer>
 
+    <!-- JavaScript for Theme and Mobile Menu -->
+    <script>
+        // --- Theme Toggle Logic ---
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateToggleIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateToggleIcon(newTheme);
+        });
+
+        function updateToggleIcon(theme) {
+            themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+
+        // --- Mobile Menu (3 Dots) Logic ---
+        const menuBtn = document.getElementById('menuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            navLinks.classList.toggle('active');
+            menuBtn.textContent = navLinks.classList.contains('active') ? '✕' : '⋮';
+        });
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuBtn.textContent = '⋮';
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
+                navLinks.classList.remove('active');
+                menuBtn.textContent = '⋮';
+            }
+        });
+    </script>
 </body>
 </html>
